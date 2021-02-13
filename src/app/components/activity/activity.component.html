@@ -1,0 +1,36 @@
+<mat-expansion-panel class="activity-panel mat-elevation-z0">
+  <mat-expansion-panel-header>
+    <mat-panel-title class="activity-panel-title-container">
+      <div class="activity-panel-title">
+        <div
+          class="activity-panel-icon"
+          [style.background]="
+            setActivityBackground(activity.gsx$activitytype.$t)
+          "
+        >
+          <p>{{ setActivityIcon(activity.gsx$activitytype.$t) }}</p>
+        </div>
+
+        {{
+          isEnglish()
+            ? activity.gsx$activitytitleen.$t
+            : activity.gsx$activitytitleru.$t
+        }}
+      </div>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <p class="activity-panel-description">
+    {{
+      isEnglish()
+        ? activity.gsx$activitydescriptionen.$t
+        : activity.gsx$activitydescriptionru.$t
+    }}
+  </p>
+
+  <button class="activity-panel-done">
+    <p>
+      <mat-icon>check_circle_outline</mat-icon>
+      {{ translate("activity_done") | uppercase }}
+    </p>
+  </button>
+</mat-expansion-panel>

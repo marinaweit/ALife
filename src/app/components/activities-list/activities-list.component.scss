@@ -1,0 +1,40 @@
+.activities-list-title {
+  font-weight: bold;
+  font-size: 24px;
+  line-height: 28px;
+  color: #1f244b;
+  margin-bottom: 1em;
+  span {
+    color: red;
+  }
+}
+
+.activities-container {
+  position: relative;
+}
+
+.move-bottom {
+  animation: moveBottom 0.3s linear;
+}
+
+.move-top {
+  animation: moveTop 0.3s linear;
+}
+
+@keyframes moveTop {
+  0% {
+    top: var(--headerHeight);
+  }
+  100% {
+    top: 120px;
+  }
+}
+
+@keyframes moveBottom {
+  0% {
+    top: 120px;
+  }
+  100% {
+    top: (--headerHeight);
+  }
+}

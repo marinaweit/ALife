@@ -1,0 +1,62 @@
+.chart {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border-radius: 50%;
+  justify-content: center;
+  background: #ffffff;
+  box-shadow: 0px 0px 8.5625px #d8ebde;
+}
+.chart .score-container {
+  text-align: center;
+  position: absolute;
+  z-index: 1000;
+  .score-title {
+    font-size: 10.275px;
+    line-height: 12px;
+    text-align: center;
+    text-transform: uppercase;
+    color: #9bb091;
+  }
+  .score {
+    font-weight: bolder;
+    color: #1f244b;
+  }
+}
+
+.collapsed-panel {
+  .score {
+    font-size: 18px;
+    line-height: 16px;
+  }
+}
+
+.expanded-panel {
+  .score {
+    font-size: 34.25px;
+    line-height: 39px;
+  }
+}
+
+svg {
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+.donut-segment {
+  stroke-dasharray: 0 100;
+  -webkit-animation: chart 1s ease-out forwards;
+  animation: chart 1s ease-out forwards;
+}
+
+@-webkit-keyframes chart {
+  to {
+    stroke-dasharray: var(--score) var(--scoreEmpty);
+  }
+}
+
+@keyframes chart {
+  to {
+    stroke-dasharray: var(--score) var(--scoreEmpty);
+  }
+}

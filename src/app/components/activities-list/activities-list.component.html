@@ -1,0 +1,21 @@
+<ng-container *ngIf="vm$ | async as vm">
+  <div
+    id="activitiesList"
+    class="activities-container"
+    [style.top]="expanded ? headerHeight : '120px'"
+    [class]="expanded ? 'move-bottom ' : 'move-top '"
+  >
+    <div class="activities-list-title">
+      {{ translate("jobs_for_today") }}
+      <span>
+        {{ vm.activities.length }}
+      </span>
+    </div>
+    <div>
+      <app-activity
+        *ngFor="let activity of vm.activities"
+        [activity]="activity"
+      ></app-activity>
+    </div>
+  </div>
+</ng-container>

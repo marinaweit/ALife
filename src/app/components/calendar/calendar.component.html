@@ -1,0 +1,14 @@
+<div class="calendar-title">{{ currentMonth }}</div>
+<div class="calendar-container">
+  <div
+    [class]="highlightCurrentDay(date) ? 'highlight-calendar' : 'calendar-item'"
+    *ngFor="let date of weekCalendar"
+  >
+    <div class="calendar-item-day">
+      {{ getDay(date) }}
+    </div>
+    <div class="calendar-item-dayname">
+      {{ getDayName(date) }}
+    </div>
+  </div>
+</div>

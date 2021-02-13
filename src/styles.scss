@@ -1,1 +1,36 @@
-/* You can add global styles to this file, and also import other style files */
+@import url("https://fonts.googleapis.com/css2?family=Ubuntu&display=swap");
+
+body,
+html {
+  margin: 0;
+  height: 100vh;
+  background: linear-gradient(274.25deg, #f4f9f9 0%, #e6f5f4 100%);
+}
+
+body * {
+  letter-spacing: 1px;
+  line-height: 20px;
+  font-family: "Ubuntu", sans-serif;
+}
+
+.container {
+  padding: 1em;
+}
+
+app-calendar {
+  flex-basis: 100%;
+}
+
+app-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 5000;
+  width: 100%;
+}
+
+button:active,
+button:focus,
+button:hover {
+  outline: none;
+}

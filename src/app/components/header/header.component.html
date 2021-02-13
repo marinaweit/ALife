@@ -31,18 +31,18 @@
           <div>
             <img
               *ngIf="currentDate === selectedDate && !vm.isScoreMax"
-              src="../../../assets/header_img_1.png"
+              src="./assets/header_img_1.png"
               alt=""
             />
             <img
               *ngIf="currentDate !== selectedDate"
-              src="../../../assets/header_day_completed.png"
+              src="./assets/header_day_completed.png"
               alt=""
             />
 
             <img
               *ngIf="currentDate === selectedDate && vm.isScoreMax"
-              src="../../../assets/header_great_job.png"
+              src="./assets/header_great_job.png"
               alt=""
             />
           </div>

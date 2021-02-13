@@ -1,2 +1,8 @@
-<app-header (headerExpanded)="handleHeaderState($event)"></app-header>
-<app-activities-list [headerExpanded]="headerExpanded"></app-activities-list>
+<app-header
+  (headerExpanded)="handleHeaderState($event)"
+  [touched]="touched"
+></app-header>
+<app-activities-list
+  (touchmove)="handleTouch($event)"
+  [headerExpanded]="headerExpanded"
+></app-activities-list>

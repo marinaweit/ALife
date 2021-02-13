@@ -23,24 +23,38 @@
     padding-bottom: 0.5em;
     position: relative;
     border: 1px solid transparent;
-    color: #1f244b;
-  }
-  .highlight-calendar {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    width: calc(100% / 8);
-    color: #ffffff;
-    padding-top: 0.5em;
-    padding-bottom: 0.5em;
-    background: linear-gradient(274.59deg, #f4b614 0.54%, #de911d 100%);
     border-radius: 23px;
     position: relative;
-    .calendar-item-dayname {
-      color: #fff;
-    }
   }
+}
+
+.highlight-past-day {
+  background: linear-gradient(274.59deg, #f4b614 0.54%, #de911d 100%);
+  color: #fff;
+  .calendar-item-dayname {
+    color: #fff;
+  }
+}
+
+.highlight-selected-current-day {
+  background: linear-gradient(274.72deg, #20d287 0.43%, #2bb3bc 104.27%);
+  color: #fff;
+  .calendar-item-dayname {
+    color: #fff;
+  }
+}
+
+.highlight-current-day {
+  background: #d0e6e0;
+  opacity: 0.5;
+  color: #1f244b;
+  .calendar-item-dayname {
+    color: #1f244b;
+  }
+}
+
+.disable-future-days {
+  opacity: 0.3;
 }
 
 .calendar-title {

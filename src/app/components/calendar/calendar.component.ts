@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { LANGUAGE } from 'src/app/constants';
+import { CalendarService } from 'src/app/services';
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -9,10 +10,11 @@ import { LANGUAGE } from 'src/app/constants';
 export class CalendarComponent implements OnInit {
   public weekCalendar = [];
   public currentMonth: string;
-  public selectedDate: moment.Moment = moment().locale('ru');
-
+  public selectedDate: string = moment().format('DDMMYYYY');
+  public currentDate: string = moment().format('DDMMYYYY');
   private language: string;
-  constructor() {}
+
+  constructor(private calendarService: CalendarService) {}
 
   ngOnInit(): void {
     this.language =
@@ -23,16 +25,58 @@ export class CalendarComponent implements OnInit {
     this.getCurrentWeek();
 
     this.currentMonth = moment().locale(this.language).format('MMMM');
+    this.calendarService.setSelectedDate(this.selectedDate);
+  }
+
+  public highlightPastDay(day: string): boolean {
+    if (moment(day).format('DDMMYYYY') === this.currentDate) {
+      return;
+    }
+
+    if (moment(day).format('DDMMYYYY') === this.selectedDate) {
+      return true;
+    }
   }
 
   public highlightCurrentDay(day: string): boolean {
-    const highlightenedDate = this.selectedDate
-      ? moment(this.selectedDate).format('D')
-      : moment().format('D');
+    if (this.selectedDate === this.currentDate) {
+      return;
+    }
 
-    if (moment(day).format('D') === highlightenedDate) {
+    if (moment(day).format('DDMMYYYY') === this.currentDate) {
       return true;
     }
+  }
+
+  public highlightSelectedCurrentDay(day: string): boolean {
+    if (
+      moment(day).format('DDMMYYYY') === this.currentDate &&
+      this.selectedDate
+    ) {
+      return true;
+    }
+  }
+
+  public disableFutureDays(day: string): boolean {
+    const calendarDay = moment(day);
+    const currentDay = moment(this.currentDate, 'DDMMYYYY');
+
+    if (calendarDay.isAfter(currentDay)) {
+      return true;
+    }
+  }
+
+  public openSelectedDate(date: Date): void {
+    const calendarDay = moment(date);
+    const currentDay = moment(this.currentDate, 'DDMMYYYY');
+
+    if (calendarDay.isAfter(currentDay)) {
+      return;
+    }
+
+    this.selectedDate = moment(date).format('DDMMYYYY');
+
+    this.calendarService.setSelectedDate(this.selectedDate);
   }
 
   private getCurrentWeek(): void {
@@ -50,6 +94,6 @@ export class CalendarComponent implements OnInit {
   }
 
   public getDayName(date: string): string {
-    return moment(date).locale(this.language).format('dd')[0].toUpperCase();
+    return moment(date).locale(this.language).format('dd').toUpperCase();
   }
 }

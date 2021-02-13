@@ -5,15 +5,48 @@
     [style.top]="expanded ? headerHeight : '120px'"
     [class]="expanded ? 'move-bottom ' : 'move-top '"
   >
-    <div class="activities-list-title">
-      {{ translate("jobs_for_today") }}
+    <ng-container *ngIf="vm.selectedDate === currentDate">
+      <div class="activities-list-title" *ngIf="vm.undoneActivities.length">
+        {{ translate("jobs_for_today") }}
+        <span>
+          {{ vm.undoneActivities?.length }}
+        </span>
+      </div>
+
+      <div class="completed-all-title" *ngIf="!vm.undoneActivities.length">
+        {{ translate("completed_all_title") }}
+      </div>
+
+      <div class="completed-all-subtitle" *ngIf="!vm.undoneActivities.length">
+        {{ translate("completed_all_subtitle") }}
+      </div>
+
+      <div>
+        <app-activity
+          *ngFor="let activity of vm.undoneActivities"
+          [activity]="activity"
+        ></app-activity>
+      </div>
+    </ng-container>
+
+    <div
+      class="activities-list-completed-title"
+      *ngIf="vm.doneActivities.length"
+    >
+      {{ translate("completed") }}
       <span>
-        {{ vm.activities.length }}
+        {{ vm.doneActivities?.length }}
       </span>
+    </div>
+    <div
+      class="completed-all-subtitle"
+      *ngIf="!vm.doneActivities.length && vm.selectedDate !== currentDate"
+    >
+      {{ translate("completed_past_zero") }}
     </div>
     <div>
       <app-activity
-        *ngFor="let activity of vm.activities"
+        *ngFor="let activity of vm.doneActivities"
         [activity]="activity"
       ></app-activity>
     </div>

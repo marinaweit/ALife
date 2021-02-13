@@ -42,21 +42,3 @@ svg {
   -webkit-transform: rotate(-90deg);
   transform: rotate(-90deg);
 }
-
-.donut-segment {
-  stroke-dasharray: 0 100;
-  -webkit-animation: chart 1s ease-out forwards;
-  animation: chart 1s ease-out forwards;
-}
-
-@-webkit-keyframes chart {
-  to {
-    stroke-dasharray: var(--score) var(--scoreEmpty);
-  }
-}
-
-@keyframes chart {
-  to {
-    stroke-dasharray: var(--score) var(--scoreEmpty);
-  }
-}

@@ -1,26 +1,38 @@
-import { AfterViewInit, Component, Input, OnInit } from '@angular/core';
-import { TranslationsService } from 'src/app/services';
+import {
+  AfterViewInit,
+  Component,
+  ElementRef,
+  Input,
+  OnInit,
+  ViewChild,
+} from '@angular/core';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { ScoreService, TranslationsService } from 'src/app/services';
 
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.scss'],
 })
-export class ChartComponent implements OnInit, AfterViewInit {
+export class ChartComponent implements OnInit {
   @Input() expanded: boolean;
-  public score = 30;
 
-  constructor(private translationsService: TranslationsService) {}
+  public vm$: Observable<{ score: number; scoreDasharray: string }>;
 
-  ngOnInit(): void {}
+  constructor(
+    private translationsService: TranslationsService,
+    private scoreService: ScoreService
+  ) {}
 
-  ngAfterViewInit(): void {
-    const donutElement = document.getElementById('donut') as HTMLStyleElement;
+  ngOnInit(): void {
+    const score$ = this.scoreService.getScore();
 
-    donutElement.style.setProperty('--score', this.score.toString());
-    donutElement.style.setProperty(
-      '--scoreEmpty',
-      (100 - this.score).toString()
+    this.vm$ = score$.pipe(
+      map((score) => ({
+        score,
+        scoreDasharray: `${score.toString()},${(100 - score).toString()}`,
+      }))
     );
   }
 

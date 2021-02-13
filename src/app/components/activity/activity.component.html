@@ -11,11 +11,31 @@
           <p>{{ setActivityIcon(activity.gsx$activitytype.$t) }}</p>
         </div>
 
-        {{
-          isEnglish()
-            ? activity.gsx$activitytitleen.$t
-            : activity.gsx$activitytitleru.$t
-        }}
+        <div class="activity-panel-title-block">
+          {{
+            isEnglish()
+              ? activity.gsx$activitytitleen.$t
+              : activity.gsx$activitytitleru.$t
+          }}
+          <div class="activity-panel-subtitle" *ngIf="!checkIfDone(activity)">
+            <span>
+              <mat-icon>access_time</mat-icon>
+              {{ activity.gsx$activitytime.$t }}{{ translate("min") }}
+            </span>
+            <span>
+              <mat-icon> show_chart</mat-icon>
+              {{ activity.gsx$activityscore.$t }}%
+            </span>
+          </div>
+
+          <div
+            class="activity-panel-subtitle-done"
+            *ngIf="checkIfDone(activity)"
+          >
+            <mat-icon>check_circle_outline</mat-icon>
+            {{ translate("completed") }}
+          </div>
+        </div>
       </div>
     </mat-panel-title>
   </mat-expansion-panel-header>
@@ -27,7 +47,11 @@
     }}
   </p>
 
-  <button class="activity-panel-done">
+  <button
+    class="activity-panel-done"
+    (click)="markAsDone(activity)"
+    *ngIf="!checkIfDone(activity) && selectedDate === currentDate"
+  >
     <p>
       <mat-icon>check_circle_outline</mat-icon>
       {{ translate("activity_done") | uppercase }}

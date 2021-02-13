@@ -1,7 +1,12 @@
 <div class="calendar-title">{{ currentMonth }}</div>
 <div class="calendar-container">
   <div
-    [class]="highlightCurrentDay(date) ? 'highlight-calendar' : 'calendar-item'"
+    (click)="openSelectedDate(date)"
+    class="calendar-item"
+    [class.highlight-past-day]="highlightPastDay(date)"
+    [class.highlight-current-day]="highlightCurrentDay(date)"
+    [class.highlight-selected-current-day]="highlightSelectedCurrentDay(date)"
+    [class.disable-future-days]="disableFutureDays(date)"
     *ngFor="let date of weekCalendar"
   >
     <div class="calendar-item-day">

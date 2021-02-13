@@ -1,37 +1,61 @@
-<div (click)="handleHeaderStateChanges()">
-  <div
-    class="header-title"
-    [style.borderBottom]="!isCollapsed ? '' : '3px solid #23ca96'"
-    [style.background]="!isCollapsed ? '' : '#dcf0ef'"
-  >
-    <ng-container *ngIf="isCollapsed; else expanded">
-      <div class="header-title-bg"></div>
-      <div class="header-title-bg2"></div>
+<ng-container *ngIf="vm$ | async as vm">
+  <div (click)="handleHeaderStateChanges()">
+    <div
+      class="header-title"
+      [style.borderBottom]="!isCollapsed ? '' : '3px solid #23ca96'"
+      [style.background]="!isCollapsed ? '' : '#dcf0ef'"
+    >
+      <ng-container *ngIf="isCollapsed; else expanded">
+        <div class="header-title-bg"></div>
+        <div class="header-title-bg2"></div>
 
-      <div class="header-date">
-        {{ currentDate }}
-      </div>
-      <div class="collapsed-chart">
-        <app-chart [expanded]="false"></app-chart>
-      </div>
-    </ng-container>
-
-    <ng-template #expanded> <app-calendar></app-calendar> </ng-template>
-  </div>
-</div>
-
-<div class="accordion" id="header" #accordion>
-  <div [@expansion]="isCollapsed">
-    <div class="expanded-content-container" [@expansion]="isCollapsed">
-      <div class="expanded-title">{{ translate(welcomeTitle) }}</div>
-      <div class="content-bg"></div>
-      <div class="expanded-content container">
-        <app-chart [expanded]="true"></app-chart>
-        <div>
-          <img src="../../../assets/header_img_1.png" alt="" />
+        <div class="header-date">
+          {{ currentDateTitle }}
         </div>
-      </div>
-      <div class="background-rectangle"></div>
+        <div class="collapsed-chart">
+          <app-chart [expanded]="false"></app-chart>
+        </div>
+      </ng-container>
+
+      <ng-template #expanded> <app-calendar></app-calendar> </ng-template>
     </div>
   </div>
-</div>
+
+  <div class="accordion" id="header" #accordion>
+    <div [@expansion]="isCollapsed">
+      <div class="expanded-content-container" [@expansion]="isCollapsed">
+        <div class="expanded-title">{{ translate(vm.welcomeTitle) }}</div>
+        <div class="content-bg"></div>
+        <div class="expanded-content container">
+          <app-chart [expanded]="true"></app-chart>
+          <div>
+            <img
+              *ngIf="currentDate === selectedDate && !vm.isScoreMax"
+              src="../../../assets/header_img_1.png"
+              alt=""
+            />
+            <img
+              *ngIf="currentDate !== selectedDate"
+              src="../../../assets/header_day_completed.png"
+              alt=""
+            />
+
+            <img
+              *ngIf="currentDate === selectedDate && vm.isScoreMax"
+              src="../../../assets/header_great_job.png"
+              alt=""
+            />
+          </div>
+        </div>
+        <div
+          class="background-rectangle"
+          [class]="
+            currentDate !== selectedDate
+              ? 'background-rectangle-orange'
+              : 'background-rectangle-green'
+          "
+        ></div>
+      </div>
+    </div>
+  </div>
+</ng-container>

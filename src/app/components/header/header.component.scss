@@ -31,8 +31,15 @@
     position: relative;
     left: -10vw;
     margin-bottom: -120px;
-    background: linear-gradient(274.72deg, #20d287 0.43%, #2bb3bc 104.27%);
     clip-path: polygon(0 0, 100% 0%, 100% 22%, 0 49%);
+  }
+
+  .background-rectangle-orange {
+    background: linear-gradient(274.59deg, #f4de14 0.54%, #dea81d 100%);
+  }
+
+  .background-rectangle-green {
+    background: linear-gradient(274.72deg, #20d287 0.43%, #2bb3bc 104.27%);
   }
 }
 
@@ -107,6 +114,5 @@
 .accordion {
   position: absolute;
   overflow: hidden;
-  background: var(--ion-color-text-contrast);
   z-index: 1000;
 }

@@ -3,12 +3,17 @@ import * as moment from 'moment';
 import {
   Component,
   EventEmitter,
-  HostListener,
+  Input,
+  OnChanges,
   OnInit,
   Output,
+  SimpleChanges,
 } from '@angular/core';
-import { LANGUAGE } from 'src/app/constants';
-import { TranslationsService } from 'src/app/services';
+import {
+  CalendarService,
+  ScoreService,
+  TranslationsService,
+} from 'src/app/services';
 import {
   trigger,
   state,
@@ -16,6 +21,8 @@ import {
   style,
   animate,
 } from '@angular/animations';
+import { combineLatest, Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 const EXPANSION_PANEL_ANIMATION_TIMING = '300ms linear';
 
@@ -34,30 +41,64 @@ const expansion = trigger('expansion', [
   styleUrls: ['./header.component.scss'],
   animations: [expansion],
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnChanges {
   @Output() headerExpanded: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Input() touched: boolean;
 
-  public currentDate: string;
+  public currentDateTitle: string;
   public isCollapsed = false;
-  public welcomeTitle: string;
 
-  @HostListener('window:scroll', ['$event']) onScrollEvent($event): void {
-    if (!this.isCollapsed) {
-      this.isCollapsed = true;
-      this.headerExpanded.emit(this.isCollapsed);
-    }
-  }
+  public currentDate: string = moment().format('DDMMYYYY');
+  public selectedDate: string = moment().format('DDMMYYYY');
 
-  constructor(private translationsService: TranslationsService) {}
+  public vm$: Observable<{ welcomeTitle: string | void; isScoreMax: boolean }>;
+
+  constructor(
+    private translationsService: TranslationsService,
+    private calendarService: CalendarService,
+    private scoreService: ScoreService
+  ) {}
 
   ngOnInit(): void {
     const language = window.navigator.language.slice(0, 2);
 
-    this.currentDate = `${moment()
+    this.currentDateTitle = `${moment()
       .locale(language)
-      .format('MMMM d')}, ${moment().format('dddd')}`;
+      .format('MMMM DD')}, ${moment().format('dddd')}`;
 
     this.getDaySegment();
+
+    const calendar$ = this.calendarService.getSelectedDate();
+
+    const score$ = this.scoreService.getScore();
+
+    this.vm$ = combineLatest([calendar$, score$]).pipe(
+      map(([calendar, score]) => {
+        this.selectedDate = calendar;
+
+        const welcomeTitleCalendar =
+          this.currentDate !== calendar
+            ? 'day_completed'
+            : this.getDaySegment();
+
+        const welcomeTitleMax = score === 100 ? 'great_job' : '';
+        const isScoreMax = score === 100;
+
+        return {
+          welcomeTitle: welcomeTitleMax
+            ? welcomeTitleMax
+            : welcomeTitleCalendar,
+          isScoreMax,
+        };
+      })
+    );
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes && changes.touched && !changes.touched.firstChange) {
+      this.isCollapsed = !!!changes.touch;
+      this.headerExpanded.emit(this.isCollapsed);
+    }
   }
 
   public handleHeaderStateChanges(): void {
@@ -69,7 +110,7 @@ export class HeaderComponent implements OnInit {
     this.headerExpanded.emit(this.isCollapsed);
   }
 
-  private getDaySegment(): void {
+  private getDaySegment(): string {
     const splitMorning = 6;
     const splitAfternoon = 12;
     const splitEvening = 18;
@@ -77,13 +118,13 @@ export class HeaderComponent implements OnInit {
     const currentHour = parseFloat(moment().format('HH'));
 
     if (currentHour >= splitMorning && currentHour < splitAfternoon) {
-      this.welcomeTitle = `welcome_title_morning`;
+      return `welcome_title_morning`;
     } else if (currentHour >= splitAfternoon && currentHour < splitEvening) {
-      this.welcomeTitle = `welcome_title_afternoon`;
+      return `welcome_title_afternoon`;
     } else if (currentHour >= splitEvening && currentHour < splitNight) {
-      this.welcomeTitle = `welcome_title_evening`;
+      return `welcome_title_evening`;
     } else {
-      this.welcomeTitle = `welcome_title_night`;
+      return `welcome_title_night`;
     }
   }
 

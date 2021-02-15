@@ -73,27 +73,10 @@ export class ActivitiesListComponent implements OnInit, OnChanges {
       )
     );
 
-    const translations$ = this.apiService.getLocalizations().pipe(
-      map((res) => res.feed.entry),
-      tap((translations) => {
-        const headerElement = document.getElementById(
-          'header'
-        ) as HTMLStyleElement;
-
-        if (headerElement) {
-          this.headerHeight = `${headerElement.offsetHeight + 100}px`;
-          headerElement.style.setProperty('--headerHeight', this.headerHeight);
-        }
-
-        this.translationsService.setTranslations(translations);
-      })
-    );
-
     this.vm$ = combineLatest([
       undoneActivities$,
       doneActivities$,
       selectedDate$,
-      translations$,
     ]).pipe(
       map(([undoneActivities, doneActivities, selectedDate]) => ({
         undoneActivities,
@@ -124,6 +107,15 @@ export class ActivitiesListComponent implements OnInit, OnChanges {
       !changes.headerExpanded.firstChange
     ) {
       this.expanded = !changes.headerExpanded.currentValue;
+
+      const headerElement = document.getElementById(
+        'header'
+      ) as HTMLStyleElement;
+
+      if (headerElement) {
+        this.headerHeight = `${headerElement.offsetHeight + 100}px`;
+        headerElement.style.setProperty('--headerHeight', this.headerHeight);
+      }
     }
   }
 

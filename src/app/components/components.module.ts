@@ -12,7 +12,13 @@ import { ChartComponent } from './chart/chart.component';
 import { CalendarComponent } from './calendar/calendar.component';
 
 @NgModule({
-  declarations: [HeaderComponent, ActivitiesListComponent, ActivityComponent, ChartComponent, CalendarComponent],
+  declarations: [
+    HeaderComponent,
+    ActivitiesListComponent,
+    ActivityComponent,
+    ChartComponent,
+    CalendarComponent,
+  ],
   imports: [
     CommonModule,
     MatExpansionModule,

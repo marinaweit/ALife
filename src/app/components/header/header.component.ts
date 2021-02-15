@@ -45,13 +45,13 @@ export class HeaderComponent implements OnInit, OnChanges {
   @Output() headerExpanded: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Input() touched: boolean;
 
-  public currentDateTitle: string;
   public isCollapsed = false;
-
   public currentDate: string = moment().format('DDMMYYYY');
-  public selectedDate: string = moment().format('DDMMYYYY');
-
-  public vm$: Observable<{ welcomeTitle: string | void; isScoreMax: boolean }>;
+  public vm$: Observable<{
+    selectedDate: string;
+    welcomeTitle: string | void;
+    isScoreMax: boolean;
+  }>;
 
   constructor(
     private translationsService: TranslationsService,
@@ -60,22 +60,11 @@ export class HeaderComponent implements OnInit, OnChanges {
   ) {}
 
   ngOnInit(): void {
-    const language = window.navigator.language.slice(0, 2);
-
-    this.currentDateTitle = `${moment()
-      .locale(language)
-      .format('MMMM DD')}, ${moment().format('dddd')}`;
-
-    this.getDaySegment();
-
     const calendar$ = this.calendarService.getSelectedDate();
-
     const score$ = this.scoreService.getScore();
 
     this.vm$ = combineLatest([calendar$, score$]).pipe(
       map(([calendar, score]) => {
-        this.selectedDate = calendar;
-
         const welcomeTitleCalendar =
           this.currentDate !== calendar
             ? 'day_completed'
@@ -85,6 +74,7 @@ export class HeaderComponent implements OnInit, OnChanges {
         const isScoreMax = score === 100;
 
         return {
+          selectedDate: calendar,
           welcomeTitle: welcomeTitleMax
             ? welcomeTitleMax
             : welcomeTitleCalendar,
@@ -99,6 +89,14 @@ export class HeaderComponent implements OnInit, OnChanges {
       this.isCollapsed = !!!changes.touch;
       this.headerExpanded.emit(this.isCollapsed);
     }
+  }
+
+  public getCurrentDateTitle(date: string): string {
+    const language = window.navigator.language.slice(0, 2);
+
+    return `${moment(date, 'DDMMYYYY')
+      .locale(language)
+      .format('MMMM DD')}, ${moment().format('dddd')}`;
   }
 
   public handleHeaderStateChanges(): void {

@@ -10,7 +10,7 @@
         <div class="header-title-bg2"></div>
 
         <div class="header-date">
-          {{ currentDateTitle }}
+          {{ getCurrentDateTitle(vm.selectedDate) }}
         </div>
         <div class="collapsed-chart">
           <app-chart [expanded]="false"></app-chart>
@@ -30,18 +30,18 @@
           <app-chart [expanded]="true"></app-chart>
           <div>
             <img
-              *ngIf="currentDate === selectedDate && !vm.isScoreMax"
+              *ngIf="currentDate === vm.selectedDate && !vm.isScoreMax"
               src="./assets/header_img_1.png"
               alt=""
             />
             <img
-              *ngIf="currentDate !== selectedDate"
+              *ngIf="currentDate !== vm.selectedDate"
               src="./assets/header_day_completed.png"
               alt=""
             />
 
             <img
-              *ngIf="currentDate === selectedDate && vm.isScoreMax"
+              *ngIf="currentDate === vm.selectedDate && vm.isScoreMax"
               src="./assets/header_great_job.png"
               alt=""
             />
@@ -50,7 +50,7 @@
         <div
           class="background-rectangle"
           [class]="
-            currentDate !== selectedDate
+            currentDate !== vm.selectedDate
               ? 'background-rectangle-orange'
               : 'background-rectangle-green'
           "

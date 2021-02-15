@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
+import { take } from 'rxjs/operators';
 import { LANGUAGE } from 'src/app/constants';
 import { CalendarService } from 'src/app/services';
 @Component({
@@ -25,7 +26,13 @@ export class CalendarComponent implements OnInit {
     this.getCurrentWeek();
 
     this.currentMonth = moment().locale(this.language).format('MMMM');
-    this.calendarService.setSelectedDate(this.selectedDate);
+
+    this.calendarService
+      .getSelectedDate()
+      .pipe(take(1))
+      .subscribe((date) => {
+        this.selectedDate = date;
+      });
   }
 
   public highlightPastDay(day: string): boolean {
@@ -82,7 +89,7 @@ export class CalendarComponent implements OnInit {
   private getCurrentWeek(): void {
     const weekStart = moment().clone().startOf('week');
 
-    for (let i = 0; i <= 6; i++) {
+    for (let i = -2; i <= 4; i++) {
       this.weekCalendar.push(
         moment(weekStart).add(i, 'days').format('YYYY-MM-DD HH:mm:ss')
       );

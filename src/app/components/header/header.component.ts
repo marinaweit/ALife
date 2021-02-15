@@ -24,7 +24,7 @@ import {
 import { combineLatest, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-const EXPANSION_PANEL_ANIMATION_TIMING = '300ms linear';
+const EXPANSION_PANEL_ANIMATION_TIMING = '200ms linear';
 
 const expansion = trigger('expansion', [
   state('true, void', style({ height: '0' })),

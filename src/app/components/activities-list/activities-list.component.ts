@@ -44,6 +44,7 @@ export class ActivitiesListComponent implements OnInit, OnChanges {
     const selectedDate$ = this.calendarService.getSelectedDate().pipe(
       tap((date) => {
         this.getDayScore(date);
+        this.setHeaderHeight();
       })
     );
 
@@ -107,15 +108,6 @@ export class ActivitiesListComponent implements OnInit, OnChanges {
       !changes.headerExpanded.firstChange
     ) {
       this.expanded = !changes.headerExpanded.currentValue;
-
-      const headerElement = document.getElementById(
-        'header'
-      ) as HTMLStyleElement;
-
-      if (headerElement) {
-        this.headerHeight = `${headerElement.offsetHeight + 100}px`;
-        headerElement.style.setProperty('--headerHeight', this.headerHeight);
-      }
     }
   }
 
@@ -139,5 +131,14 @@ export class ActivitiesListComponent implements OnInit, OnChanges {
     }, 0);
 
     this.scoreService.setScore(todayScore);
+  }
+
+  private setHeaderHeight(): void {
+    const headerElement = document.getElementById('header') as HTMLStyleElement;
+
+    if (headerElement) {
+      this.headerHeight = `${headerElement.offsetHeight + 100}px`;
+      headerElement.style.setProperty('--headerHeight', this.headerHeight);
+    }
   }
 }

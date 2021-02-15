@@ -1,4 +1,5 @@
 import {
+  AfterViewInit,
   Component,
   Input,
   OnChanges,
@@ -25,7 +26,8 @@ export interface ActivitiesListViewModel {
   templateUrl: './activities-list.component.html',
   styleUrls: ['./activities-list.component.scss'],
 })
-export class ActivitiesListComponent implements OnInit, OnChanges {
+export class ActivitiesListComponent
+  implements OnInit, OnChanges, AfterViewInit {
   @Input() headerExpanded;
 
   public expanded = true;
@@ -44,7 +46,6 @@ export class ActivitiesListComponent implements OnInit, OnChanges {
     const selectedDate$ = this.calendarService.getSelectedDate().pipe(
       tap((date) => {
         this.getDayScore(date);
-        this.setHeaderHeight();
       })
     );
 
@@ -85,6 +86,10 @@ export class ActivitiesListComponent implements OnInit, OnChanges {
         selectedDate,
       }))
     );
+  }
+
+  ngAfterViewInit(): void {
+    this.setHeaderHeight();
   }
 
   public checkIfDone(activity): boolean {
@@ -137,7 +142,7 @@ export class ActivitiesListComponent implements OnInit, OnChanges {
     const headerElement = document.getElementById('header') as HTMLStyleElement;
 
     if (headerElement) {
-      this.headerHeight = `${headerElement.offsetHeight + 100}px`;
+      this.headerHeight = `${headerElement.offsetHeight + 120}px`;
       headerElement.style.setProperty('--headerHeight', this.headerHeight);
     }
   }

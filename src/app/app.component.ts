@@ -1,6 +1,12 @@
 import { Component } from '@angular/core';
+import { combineLatest, Observable } from 'rxjs';
 import { map, tap } from 'rxjs/operators';
-import { AnalyticsService, ApiService, TranslationsService } from './services';
+import {
+  AnalyticsService,
+  ApiService,
+  LoaderService,
+  TranslationsService,
+} from './services';
 
 @Component({
   selector: 'app-root',
@@ -11,26 +17,28 @@ export class AppComponent {
   constructor(
     private apiService: ApiService,
     private translationsService: TranslationsService,
-    private analyticsService: AnalyticsService
+    private analyticsService: AnalyticsService,
+    private loaderService: LoaderService
   ) {
     document.addEventListener('deviceready', this.onDeviceReady, false);
-    this.getTranslations();
+    this.onDeviceReady();
   }
+
+  public vm$: Observable<{ loading: boolean }>;
 
   private onDeviceReady(): void {
     this.analyticsService.startTimer();
-    this.getTranslations();
-  }
 
-  private getTranslations(): void {
-    this.apiService
-      .getLocalizations()
-      .pipe(
-        map((res) => res.feed.entry),
-        tap((translations) =>
-          this.translationsService.setTranslations(translations)
-        )
+    const loading$ = this.loaderService.getLoaderState();
+    const translations$ = this.apiService.getLocalizations().pipe(
+      map((res) => res.feed.entry),
+      tap((translations) =>
+        this.translationsService.setTranslations(translations)
       )
-      .subscribe();
+    );
+
+    this.vm$ = combineLatest([loading$, translations$]).pipe(
+      map(([loading]) => ({ loading }))
+    );
   }
 }

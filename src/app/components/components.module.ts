@@ -10,6 +10,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { MatIconModule } from '@angular/material/icon';
 import { ChartComponent } from './chart/chart.component';
 import { CalendarComponent } from './calendar/calendar.component';
+import { LoaderComponent } from './loader/loader.component';
 
 @NgModule({
   declarations: [
@@ -18,6 +19,7 @@ import { CalendarComponent } from './calendar/calendar.component';
     ActivityComponent,
     ChartComponent,
     CalendarComponent,
+    LoaderComponent,
   ],
   imports: [
     CommonModule,
@@ -27,6 +29,6 @@ import { CalendarComponent } from './calendar/calendar.component';
     HttpClientModule,
     MatIconModule,
   ],
-  exports: [HeaderComponent, ActivitiesListComponent],
+  exports: [HeaderComponent, ActivitiesListComponent, LoaderComponent],
 })
 export class ComponentsModule {}

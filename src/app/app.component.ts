@@ -7,11 +7,14 @@ import {
   LoaderService,
   TranslationsService,
 } from './services';
+import { routeTransitionAnimations } from './app-routing-animations';
+import { RouterOutlet } from '@angular/router';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss'],
+  animations: [routeTransitionAnimations],
 })
 export class AppComponent {
   constructor(
@@ -39,6 +42,14 @@ export class AppComponent {
 
     this.vm$ = combineLatest([loading$, translations$]).pipe(
       map(([loading]) => ({ loading }))
+    );
+  }
+
+  public prepareRoute(outlet: RouterOutlet): void {
+    return (
+      outlet &&
+      outlet.activatedRouteData &&
+      outlet.activatedRouteData['animationState']
     );
   }
 }

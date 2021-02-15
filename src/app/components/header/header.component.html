@@ -30,17 +30,20 @@
           <app-chart [expanded]="true"></app-chart>
           <div>
             <img
+              loading="lazy"
               *ngIf="currentDate === vm.selectedDate && !vm.isScoreMax"
               src="./assets/header_img_1.png"
               alt=""
             />
             <img
+              loading="lazy"
               *ngIf="currentDate !== vm.selectedDate"
               src="./assets/header_day_completed.png"
               alt=""
             />
 
             <img
+              loading="lazy"
               *ngIf="currentDate === vm.selectedDate && vm.isScoreMax"
               src="./assets/header_great_job.png"
               alt=""

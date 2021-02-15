@@ -7,18 +7,34 @@ import { TutorialTwoComponent } from './pages/tutorials/tutorial-two/tutorial-tw
 import { TutorialGuard } from './guards';
 
 const routes: Routes = [
-  { path: 'tutorial-one', component: TutorialOneComponent },
+  {
+    path: 'tutorial-one',
+    component: TutorialOneComponent,
+    data: { animationState: 'One' },
+  },
   {
     path: 'tutorial-two',
     component: TutorialTwoComponent,
+    data: { animationState: 'Two' },
   },
   {
     path: 'tutorial-three',
     component: TutorialThreeComponent,
+    data: { animationState: 'Three' },
   },
 
-  { path: 'main', component: MainComponent, canActivate: [TutorialGuard] },
-  { path: '**', component: MainComponent, canActivate: [TutorialGuard] },
+  {
+    path: 'main',
+    component: MainComponent,
+    canActivate: [TutorialGuard],
+    data: { animationState: 'Main' },
+  },
+  {
+    path: '**',
+    component: MainComponent,
+    canActivate: [TutorialGuard],
+    data: { animationState: 'Main' },
+  },
 ];
 
 @NgModule({

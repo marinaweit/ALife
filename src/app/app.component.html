@@ -1,5 +1,7 @@
-<router-outlet>
-  <ng-container *ngIf="vm$ | async as vm">
-    <app-loader *ngIf="vm.loading"></app-loader>
-  </ng-container>
-</router-outlet>
+<div [@triggerName]="prepareRoute(outlet)">
+  <router-outlet #outlet="outlet">
+    <ng-container *ngIf="vm$ | async as vm">
+      <app-loader *ngIf="vm.loading"></app-loader>
+    </ng-container>
+  </router-outlet>
+</div>

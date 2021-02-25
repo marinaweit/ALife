@@ -51,7 +51,8 @@
   }
 }
 
-.completed-all-title {
+.completed-all-title,
+.next-day-title {
   font-size: 24px;
   line-height: 28px;
   font-weight: bold;
@@ -59,11 +60,29 @@
   color: #1f244b;
 }
 
-.completed-all-subtitle {
+.completed-all-subtitle,
+.next-day-subtitle {
   font-size: 16px;
   line-height: 18px;
   text-align: center;
   color: #1f244b;
   margin-top: 1em;
   margin-bottom: 2em;
+}
+
+.next-day-subtitle {
+  opacity: 0.7;
+}
+
+.next-day-button {
+  color: #5f657f;
+  border: 1px solid #5f657f;
+  border-radius: 10px;
+  padding: 1em;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 18px;
+  margin: 1em auto;
+  display: flex;
+  background: transparent;
 }

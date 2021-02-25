@@ -34,6 +34,7 @@ export class ActivitiesListComponent
   public headerHeight: string;
   public vm$: Observable<ActivitiesListViewModel>;
   public currentDate: string = moment().format('DDMMYYYY');
+  public nextDate: string = moment().add(1, 'day').format('DDMMYYYY');
 
   constructor(
     private apiService: ApiService,
@@ -145,5 +146,9 @@ export class ActivitiesListComponent
       this.headerHeight = `${headerElement.offsetHeight + 120}px`;
       headerElement.style.setProperty('--headerHeight', this.headerHeight);
     }
+  }
+
+  public handleGoToTodayButtonClick(): void {
+    this.calendarService.setSelectedDate(moment().format('DDMMYYYY'));
   }
 }

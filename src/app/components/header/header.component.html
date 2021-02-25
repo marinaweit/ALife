@@ -28,7 +28,7 @@
         <div class="content-bg"></div>
         <div class="expanded-content container">
           <app-chart [expanded]="true"></app-chart>
-          <div>
+          <div class="header-img">
             <img
               loading="lazy"
               *ngIf="currentDate === vm.selectedDate && !vm.isScoreMax"
@@ -37,26 +37,35 @@
             />
             <img
               loading="lazy"
-              *ngIf="currentDate !== vm.selectedDate"
+              *ngIf="
+                currentDate !== vm.selectedDate && vm.selectedDate !== nextDate
+              "
               src="./assets/header_day_completed.png"
               alt=""
             />
 
             <img
               loading="lazy"
-              *ngIf="currentDate === vm.selectedDate && vm.isScoreMax"
+              *ngIf="vm.isScoreMax"
               src="./assets/header_great_job.png"
+              alt=""
+            />
+
+            <img
+              loading="lazy"
+              *ngIf="vm.selectedDate === nextDate"
+              src="./assets/header_img_next_day.png"
               alt=""
             />
           </div>
         </div>
         <div
           class="background-rectangle"
-          [class]="
-            currentDate !== vm.selectedDate
-              ? 'background-rectangle-orange'
-              : 'background-rectangle-green'
+          [class.background-rectangle-orange]="
+            currentDate !== vm.selectedDate && vm.selectedDate !== nextDate
           "
+          [class.background-rectangle-green]="currentDate === vm.selectedDate"
+          [class.background-rectangle-blue]="nextDate === vm.selectedDate"
         ></div>
       </div>
     </div>

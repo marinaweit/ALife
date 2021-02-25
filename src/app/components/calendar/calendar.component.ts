@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as moment from 'moment';
+import { Subscription } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { LANGUAGE } from 'src/app/constants';
 import { CalendarService } from 'src/app/services';
@@ -8,12 +9,13 @@ import { CalendarService } from 'src/app/services';
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss'],
 })
-export class CalendarComponent implements OnInit {
+export class CalendarComponent implements OnInit, OnDestroy {
   public weekCalendar = [];
   public currentMonth: string;
   public selectedDate: string = moment().format('DDMMYYYY');
   public currentDate: string = moment().format('DDMMYYYY');
   private language: string;
+  private sub: Subscription;
 
   constructor(private calendarService: CalendarService) {}
 
@@ -27,12 +29,15 @@ export class CalendarComponent implements OnInit {
 
     this.currentMonth = moment().locale(this.language).format('MMMM');
 
-    this.calendarService
-      .getSelectedDate()
-      .pipe(take(1))
-      .subscribe((date) => {
-        this.selectedDate = date;
-      });
+    this.sub = this.calendarService.getSelectedDate().subscribe((date) => {
+      this.selectedDate = date;
+    });
+  }
+
+  ngOnDestroy(): void {
+    if (this.sub) {
+      this.sub.unsubscribe();
+    }
   }
 
   public highlightPastDay(day: string): boolean {
@@ -55,6 +60,19 @@ export class CalendarComponent implements OnInit {
     }
   }
 
+  public highlightNextDay(day: string): boolean {
+    if (moment(day).format('DDMMYYYY') === this.currentDate) {
+      return;
+    }
+
+    if (
+      moment().add(1, 'day').format('DDMMYYYY') === this.selectedDate &&
+      moment(day).format('DDMMYYYY') === this.selectedDate
+    ) {
+      return true;
+    }
+  }
+
   public highlightSelectedCurrentDay(day: string): boolean {
     if (
       moment(day).format('DDMMYYYY') === this.currentDate &&
@@ -66,7 +84,7 @@ export class CalendarComponent implements OnInit {
 
   public disableFutureDays(day: string): boolean {
     const calendarDay = moment(day);
-    const currentDay = moment(this.currentDate, 'DDMMYYYY');
+    const currentDay = moment(this.currentDate, 'DDMMYYYY').add(1, 'day');
 
     if (calendarDay.isAfter(currentDay)) {
       return true;
@@ -75,7 +93,7 @@ export class CalendarComponent implements OnInit {
 
   public openSelectedDate(date: Date): void {
     const calendarDay = moment(date);
-    const currentDay = moment(this.currentDate, 'DDMMYYYY');
+    const currentDay = moment(this.currentDate, 'DDMMYYYY').add(1, 'day');
 
     if (calendarDay.isAfter(currentDay)) {
       return;

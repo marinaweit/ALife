@@ -4,6 +4,7 @@
     (click)="openSelectedDate(date)"
     class="calendar-item"
     [class.highlight-past-day]="highlightPastDay(date)"
+    [class.highlight-next-day]="highlightNextDay(date)"
     [class.highlight-current-day]="highlightCurrentDay(date)"
     [class.highlight-selected-current-day]="highlightSelectedCurrentDay(date)"
     [class.disable-future-days]="disableFutureDays(date)"

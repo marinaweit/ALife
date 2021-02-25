@@ -40,10 +40,29 @@
     </div>
     <div
       class="completed-all-subtitle"
-      *ngIf="!vm.doneActivities.length && vm.selectedDate !== currentDate"
+      *ngIf="
+        !vm.doneActivities.length &&
+        vm.selectedDate !== currentDate &&
+        vm.selectedDate !== nextDate
+      "
     >
       {{ translate("completed_past_zero") }}
     </div>
+
+    <div *ngIf="vm.selectedDate === nextDate">
+      <div class="next-day-title">
+        {{ translate("next_day_info_title") }}
+      </div>
+
+      <div class="next-day-subtitle">
+        {{ translate("next_day_info_subtitle") }}
+      </div>
+
+      <button class="next-day-button" (click)="handleGoToTodayButtonClick()">
+        {{ translate("next_day_go_today") }}
+      </button>
+    </div>
+
     <div>
       <app-activity
         *ngFor="let activity of vm.doneActivities"

@@ -47,6 +47,7 @@ export class HeaderComponent implements OnInit, OnChanges {
 
   public isCollapsed = false;
   public currentDate: string = moment().format('DDMMYYYY');
+  public nextDate: string = moment().add(1, 'day').format('DDMMYYYY');
   public vm$: Observable<{
     selectedDate: string;
     welcomeTitle: string | void;
@@ -65,10 +66,17 @@ export class HeaderComponent implements OnInit, OnChanges {
 
     this.vm$ = combineLatest([calendar$, score$]).pipe(
       map(([calendar, score]) => {
-        const welcomeTitleCalendar =
-          this.currentDate !== calendar
-            ? 'day_completed'
-            : this.getDaySegment();
+        console.log('calendar:', calendar);
+        let welcomeTitleCalendar;
+
+        if (calendar !== moment().add(1, 'day').format('DDMMYYYY')) {
+          welcomeTitleCalendar =
+            this.currentDate !== calendar
+              ? 'day_completed'
+              : this.getDaySegment();
+        } else {
+          welcomeTitleCalendar = 'next_day';
+        }
 
         const welcomeTitleMax = score === 100 ? 'great_job' : '';
         const isScoreMax = score === 100;

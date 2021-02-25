@@ -44,6 +44,14 @@
   }
 }
 
+.highlight-next-day {
+  background: linear-gradient(274.72deg, #20b2d2 0.43%, #2b88bc 104.27%);
+  color: #fff;
+  .calendar-item-dayname {
+    color: #fff;
+  }
+}
+
 .highlight-current-day {
   background: #d0e6e0;
   opacity: 0.5;

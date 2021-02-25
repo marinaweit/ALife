@@ -29,7 +29,7 @@
 }
 
 .highlight-past-day {
-  background: linear-gradient(274.59deg, #f4b614 0.54%, #de911d 100%);
+  background: linear-gradient(220deg, #f4b614 0%, #de911d 100%);
   color: #fff;
   .calendar-item-dayname {
     color: #fff;
@@ -37,7 +37,7 @@
 }
 
 .highlight-selected-current-day {
-  background: linear-gradient(274.72deg, #20d287 0.43%, #2bb3bc 104.27%);
+  background: linear-gradient(220deg, #20d287 0%, #2bb3bc 100%);
   color: #fff;
   .calendar-item-dayname {
     color: #fff;
@@ -45,7 +45,7 @@
 }
 
 .highlight-next-day {
-  background: linear-gradient(274.72deg, #20b2d2 0.43%, #2b88bc 104.27%);
+  background: linear-gradient(220deg, #20b2d2 0%, #2b88bc 100%);
   color: #fff;
   .calendar-item-dayname {
     color: #fff;

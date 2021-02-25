@@ -1,6 +1,7 @@
 import { Component, Input, OnDestroy, OnInit } from '@angular/core';
 import { LANGUAGE } from 'src/app/constants';
 import {
+  AnalyticsService,
   CalendarService,
   ScoreService,
   TranslationsService,
@@ -25,7 +26,8 @@ export class ActivityComponent implements OnInit, OnDestroy {
   constructor(
     private translationsService: TranslationsService,
     private calendarService: CalendarService,
-    private scoreService: ScoreService
+    private scoreService: ScoreService,
+    private analitycsService: AnalyticsService
   ) {}
 
   ngOnInit(): void {
@@ -104,12 +106,12 @@ export class ActivityComponent implements OnInit, OnDestroy {
         this.scoreService.setScore(newScore);
       });
 
-    // const playtime = Number(localStorage.getItem('playtime')) / 60;
-    // const analyticsOptions = {
-    //   playtime: playtime,
-    //   activity_id: activity.gsx$activityid.$t,
-    // };
-    // this.analitycsService.logEvent('activity_complete', analyticsOptions);
+    const playtime = Number(localStorage.getItem('playtime')) / 60;
+    const analyticsOptions = {
+      playtime: playtime,
+      activity_id: activity.gsx$activityid.$t,
+    };
+    this.analitycsService.logEvent('activity_complete', analyticsOptions);
   }
 
   public checkIfDone(activity): boolean {

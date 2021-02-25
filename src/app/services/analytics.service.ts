@@ -12,18 +12,18 @@ export class AnalyticsService {
   constructor() {}
 
   public logEvent(event: string, options: any = {}): void {
-    // FirebasePlugin.logEvent(event, options);
-    // facebookConnectPlugin.logEvent(
-    //   event,
-    //   options,
-    //   1,
-    //   (res) => {
-    //     console.log('success', res);
-    //   },
-    //   (err) => {
-    //     console.log('err', err);
-    //   }
-    // );
+    FirebasePlugin.logEvent(event, options);
+    facebookConnectPlugin.logEvent(
+      event,
+      options,
+      1,
+      (res) => {
+        console.log('success', res);
+      },
+      (err) => {
+        console.log('err', err);
+      }
+    );
   }
 
   public startTimer(): void {

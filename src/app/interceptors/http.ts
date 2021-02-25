@@ -30,9 +30,7 @@ export class HttpInterceptor implements HttpInterceptor {
       .pipe(
         map<HttpEvent<any>, any>((evt: HttpEvent<any>) => {
           if (evt instanceof HttpResponse) {
-            setTimeout(() => {
-              this.loaderService.setLoaderState(false);
-            }, 300);
+            this.loaderService.setLoaderState(false);
           }
           return evt;
         })

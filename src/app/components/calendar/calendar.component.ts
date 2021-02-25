@@ -89,7 +89,7 @@ export class CalendarComponent implements OnInit {
   private getCurrentWeek(): void {
     const weekStart = moment().clone().startOf('week');
 
-    for (let i = -2; i <= 4; i++) {
+    for (let i = 0; i <= 6; i++) {
       this.weekCalendar.push(
         moment(weekStart).add(i, 'days').format('YYYY-MM-DD HH:mm:ss')
       );

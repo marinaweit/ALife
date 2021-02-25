@@ -52,15 +52,15 @@ export class ActivityComponent implements OnInit, OnDestroy {
   public setActivityIcon(type: string): string {
     switch (type) {
       case 'physycalActivity':
-        return '🤸';
+        return '💪🏼';
       case 'healthyEating':
         return '🍏';
       case 'health':
-        return '📿';
+        return '💊';
       case 'organization':
-        return '📃';
+        return '🗃';
       case 'recreation':
-        return '🛁';
+        return '🏖';
       case 'hobby':
         return '🎨';
     }

@@ -8,10 +8,10 @@ import * as moment from 'moment';
 const dayChange = trigger('inOutAnimation', [
   transition(':enter', [
     style({ opacity: 0 }),
-    animate('0.4s linear', style({ opacity: 1 })),
+    animate('0.2s linear', style({ opacity: 1 })),
   ]),
   transition(':leave', [
-    animate('0.4s linear', style({ opacity: 0 })),
+    animate('0.2s linear', style({ opacity: 0 })),
     style({ opacity: 1 }),
   ]),
 ]);

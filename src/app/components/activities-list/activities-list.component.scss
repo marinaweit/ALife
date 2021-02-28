@@ -39,13 +39,13 @@
     top: var(--headerHeight);
   }
   100% {
-    top: 120px;
+    top: 90px;
   }
 }
 
 @keyframes moveBottom {
   0% {
-    top: 120px;
+    top: 90px;
   }
   100% {
     top: (--headerHeight);

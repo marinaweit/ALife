@@ -2,6 +2,7 @@
   <div (click)="handleHeaderStateChanges()">
     <div
       class="header-title"
+      [class]="isCollapsed ? 'collapsed-header-title' : 'expanded-header-title'"
       [style.borderBottom]="!isCollapsed ? '' : '3px solid #23ca96'"
       [style.background]="!isCollapsed ? '' : '#dcf0ef'"
     >

@@ -143,7 +143,7 @@ export class ActivitiesListComponent
     const headerElement = document.getElementById('header') as HTMLStyleElement;
 
     if (headerElement) {
-      this.headerHeight = `${headerElement.offsetHeight + 120}px`;
+      this.headerHeight = `${headerElement.offsetHeight + 90}px`;
       headerElement.style.setProperty('--headerHeight', this.headerHeight);
     }
   }

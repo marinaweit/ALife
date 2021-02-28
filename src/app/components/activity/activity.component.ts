@@ -71,17 +71,17 @@ export class ActivityComponent implements OnInit, OnDestroy {
   public setActivityBackground(type: string): string {
     switch (type) {
       case 'physycalActivity':
-        return '#c2eefc';
+        return '#E6FFFF';
       case 'healthyEating':
-        return '#bff377';
+        return '#EAFFE6';
       case 'health':
-        return '#ffa3bf';
+        return '#FFE6ED';
       case 'organization':
-        return '#89b7fa';
+        return '#E6F3FF';
       case 'recreation':
-        return '#fbdf6f';
+        return '#FFFFE6';
       case 'hobby':
-        return '#bcafe4';
+        return '#FCE6FF';
     }
   }
 

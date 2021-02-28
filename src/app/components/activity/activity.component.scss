@@ -6,6 +6,7 @@
   .activity-panel-title-block {
     display: flex;
     flex-direction: column;
+    padding: 8px 0;
   }
   .activity-panel-subtitle {
     margin-top: 1em;
@@ -27,13 +28,14 @@
     }
   }
   .activity-panel-description {
-    padding-bottom: 1em;
+    padding-bottom: 16px;
+    margin: 0;
     font-size: 16px;
     line-height: 24px;
     color: #1f244b;
   }
   .activity-panel-title-container {
-    padding: 1em 0;
+    padding: 12px 8px 12px 12px;
     font-weight: 600;
     display: flex;
     justify-content: space-between;
@@ -52,13 +54,13 @@
         display: inline-block;
         font-size: 1.5em;
         line-height: 200px;
-        height: 50px;
-        width: 50px;
+        height: 60px;
+        width: 60px;
         text-align: center;
-        margin-right: 20px;
+        margin-right: 16px;
         border-radius: 10px;
         p {
-          line-height: 0;
+          line-height: 0.5;
           vertical-align: middle;
         }
       }
@@ -87,7 +89,8 @@
 }
 
 .mat-expansion-panel-header {
-  padding: 0.1em 0.8em;
+  padding: 0;
+  padding-right: 12px;
   height: auto;
 }
 
@@ -115,5 +118,11 @@
     margin-right: 5px;
     width: 18px;
     height: 18px;
+  }
+}
+
+::ng-deep {
+  .mat-expansion-panel-body {
+    padding: 0 12px 12px !important;
   }
 }

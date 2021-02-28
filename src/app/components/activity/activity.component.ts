@@ -1,4 +1,4 @@
-import { Component, Input, OnDestroy, OnInit } from '@angular/core';
+import { Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { LANGUAGE } from 'src/app/constants';
 import {
   AnalyticsService,
@@ -8,7 +8,8 @@ import {
 } from 'src/app/services';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { delay, take } from 'rxjs/operators';
+import { MatExpansionPanel } from '@angular/material/expansion';
 @Component({
   selector: 'app-activity',
   templateUrl: './activity.component.html',
@@ -16,9 +17,12 @@ import { take } from 'rxjs/operators';
 })
 export class ActivityComponent implements OnInit, OnDestroy {
   @Input() activity;
+  @ViewChild(MatExpansionPanel, { static: true })
+  matExpansionPanelElement: MatExpansionPanel;
 
   public selectedDate: string;
   public currentDate: string = moment().format('DDMMYYYY');
+  public isDone: boolean;
 
   private language: string;
   private sub: Subscription;
@@ -90,28 +94,33 @@ export class ActivityComponent implements OnInit, OnDestroy {
   }
 
   public markAsDone(activity): void {
-    const storageItems = JSON.parse(localStorage.getItem('doneActivities'));
+    this.matExpansionPanelElement.close();
+    this.isDone = true;
 
-    const newStorageData = storageItems
-      ? [...storageItems, activity]
-      : [activity];
+    setTimeout(() => {
+      const storageItems = JSON.parse(localStorage.getItem('doneActivities'));
 
-    localStorage.setItem('doneActivities', JSON.stringify(newStorageData));
+      const newStorageData = storageItems
+        ? [...storageItems, activity]
+        : [activity];
 
-    this.scoreService
-      .getScore()
-      .pipe(take(1))
-      .subscribe((score) => {
-        const newScore = score + Number(activity.gsx$activityscore.$t);
-        this.scoreService.setScore(newScore);
-      });
+      localStorage.setItem('doneActivities', JSON.stringify(newStorageData));
 
-    const playtime = Number(localStorage.getItem('playtime')) / 60;
-    const analyticsOptions = {
-      playtime: playtime,
-      activity_id: activity.gsx$activityid.$t,
-    };
-    this.analitycsService.logEvent('activity_complete', analyticsOptions);
+      this.scoreService
+        .getScore()
+        .pipe(take(1))
+        .subscribe((score) => {
+          const newScore = score + Number(activity.gsx$activityscore.$t);
+          this.scoreService.setScore(newScore);
+        });
+
+      const playtime = Number(localStorage.getItem('playtime')) / 60;
+      const analyticsOptions = {
+        playtime: playtime,
+        activity_id: activity.gsx$activityid.$t,
+      };
+      this.analitycsService.logEvent('activity_complete', analyticsOptions);
+    }, 150);
   }
 
   public checkIfDone(activity): boolean {

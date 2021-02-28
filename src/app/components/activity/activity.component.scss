@@ -126,3 +126,17 @@
     padding: 0 12px 12px !important;
   }
 }
+
+.hide-animation {
+  animation: 0.3s hide linear;
+}
+
+@keyframes hide {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    height: 0;
+  }
+}

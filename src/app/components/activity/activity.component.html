@@ -1,4 +1,8 @@
-<mat-expansion-panel class="activity-panel mat-elevation-z0">
+<mat-expansion-panel
+  class="activity-panel mat-elevation-z0"
+  #matExpansionPanel
+  [class.hide-animation]="isDone"
+>
   <mat-expansion-panel-header>
     <mat-panel-title class="activity-panel-title-container">
       <div class="activity-panel-title">

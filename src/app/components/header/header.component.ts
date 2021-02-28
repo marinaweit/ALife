@@ -66,7 +66,6 @@ export class HeaderComponent implements OnInit, OnChanges {
 
     this.vm$ = combineLatest([calendar$, score$]).pipe(
       map(([calendar, score]) => {
-        console.log('calendar:', calendar);
         let welcomeTitleCalendar;
 
         if (calendar !== moment().add(1, 'day').format('DDMMYYYY')) {

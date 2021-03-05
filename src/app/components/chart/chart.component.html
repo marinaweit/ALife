@@ -1,6 +1,6 @@
 <ng-container *ngIf="vm$ | async as vm">
   <div [class]="expanded ? 'expanded-panel chart' : 'collapsed-panel chart'">
-    <div class="score-container">
+    <div class="score-container" *ngIf="triggerDayChange" [@inOutAnimation]>
       <div class="score-title" *ngIf="expanded">
         {{ translate("score_today") }}
       </div>

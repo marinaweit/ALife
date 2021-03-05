@@ -1,12 +1,14 @@
 <ng-container *ngIf="vm$ | async as vm">
-  <div (click)="handleHeaderStateChanges()">
+  <div (click)="handleHeaderStateChanges(vm.headerState)">
     <div
       class="header-title"
-      [class]="isCollapsed ? 'collapsed-header-title' : 'expanded-header-title'"
-      [style.borderBottom]="!isCollapsed ? '' : '3px solid #23ca96'"
-      [style.background]="!isCollapsed ? '' : '#dcf0ef'"
+      [class]="
+        !vm.headerState ? 'collapsed-header-title' : 'expanded-header-title'
+      "
+      [style.borderBottom]="vm.headerState ? '' : '3px solid #23ca96'"
+      [style.background]="vm.headerState ? '' : '#dcf0ef'"
     >
-      <ng-container *ngIf="isCollapsed; else expanded">
+      <ng-container *ngIf="!vm.headerState; else expanded">
         <div class="header-title-bg"></div>
         <div class="header-title-bg2"></div>
 
@@ -17,19 +19,20 @@
           <app-chart [expanded]="false"></app-chart>
         </div>
       </ng-container>
-
       <ng-template #expanded> <app-calendar></app-calendar> </ng-template>
     </div>
   </div>
 
-  <div class="accordion" id="header" #accordion>
-    <div [@expansion]="isCollapsed">
-      <div class="expanded-content-container" [@expansion]="isCollapsed">
-        <div class="expanded-title">{{ translate(vm.welcomeTitle) }}</div>
+  <div class="accordion">
+    <div [@expansion]="!vm.headerState">
+      <div class="expanded-content-container" [@expansion]="!vm.headerState">
         <div class="content-bg"></div>
+        <div class="expanded-title" *ngIf="triggerDayChange" [@inOutAnimation]>
+          {{ translate(vm.welcomeTitle) }}
+        </div>
         <div class="expanded-content container">
           <app-chart [expanded]="true"></app-chart>
-          <div>
+          <div *ngIf="triggerDayChange" [@inOutAnimation]>
             <img
               loading="lazy"
               *ngIf="currentDate === vm.selectedDate && !vm.isScoreMax"

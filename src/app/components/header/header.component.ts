@@ -1,16 +1,9 @@
 import * as moment from 'moment';
 
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnChanges,
-  OnInit,
-  Output,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   CalendarService,
+  HeaderService,
   ScoreService,
   TranslationsService,
 } from 'src/app/services';
@@ -22,7 +15,18 @@ import {
   animate,
 } from '@angular/animations';
 import { combineLatest, Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, pairwise } from 'rxjs/operators';
+
+const dayChange = trigger('inOutAnimation', [
+  transition(':enter', [
+    style({ opacity: 0 }),
+    animate('0.2s linear', style({ opacity: 1 })),
+  ]),
+  transition(':leave', [
+    animate('0.2s linear', style({ opacity: 0 })),
+    style({ opacity: 1 }),
+  ]),
+]);
 
 const EXPANSION_PANEL_ANIMATION_TIMING = '200ms linear';
 
@@ -39,16 +43,14 @@ const expansion = trigger('expansion', [
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
-  animations: [expansion],
+  animations: [expansion, dayChange],
 })
-export class HeaderComponent implements OnInit, OnChanges {
-  @Output() headerExpanded: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Input() touched: boolean;
-
-  public isCollapsed = false;
+export class HeaderComponent implements OnInit {
+  public triggerDayChange = true;
   public currentDate: string = moment().format('DDMMYYYY');
   public nextDate: string = moment().add(1, 'day').format('DDMMYYYY');
   public vm$: Observable<{
+    headerState: boolean;
     selectedDate: string;
     welcomeTitle: string | void;
     isScoreMax: boolean;
@@ -57,15 +59,28 @@ export class HeaderComponent implements OnInit, OnChanges {
   constructor(
     private translationsService: TranslationsService,
     private calendarService: CalendarService,
-    private scoreService: ScoreService
+    private scoreService: ScoreService,
+    private headerService: HeaderService
   ) {}
 
   ngOnInit(): void {
+    const headerState$ = this.headerService.getHeaderState();
     const calendar$ = this.calendarService.getSelectedDate();
     const score$ = this.scoreService.getScore();
 
-    this.vm$ = combineLatest([calendar$, score$]).pipe(
-      map(([calendar, score]) => {
+    calendar$.pipe(pairwise()).subscribe(([previousValue, currentValue]) => {
+      if (previousValue === currentValue) {
+        return;
+      }
+
+      this.triggerDayChange = false;
+      setTimeout(() => {
+        this.triggerDayChange = true;
+      }, 0);
+    });
+
+    this.vm$ = combineLatest([headerState$, calendar$, score$]).pipe(
+      map(([headerState, calendar, score]) => {
         let welcomeTitleCalendar;
 
         if (calendar !== moment().add(1, 'day').format('DDMMYYYY')) {
@@ -81,6 +96,7 @@ export class HeaderComponent implements OnInit, OnChanges {
         const isScoreMax = score === 100;
 
         return {
+          headerState,
           selectedDate: calendar,
           welcomeTitle: welcomeTitleMax
             ? welcomeTitleMax
@@ -91,13 +107,6 @@ export class HeaderComponent implements OnInit, OnChanges {
     );
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes && changes.touched && !changes.touched.firstChange) {
-      this.isCollapsed = !!!changes.touch;
-      this.headerExpanded.emit(this.isCollapsed);
-    }
-  }
-
   public getCurrentDateTitle(date: string): string {
     const language = window.navigator.language.slice(0, 2);
 
@@ -106,13 +115,8 @@ export class HeaderComponent implements OnInit, OnChanges {
       .format('MMMM DD')}, ${moment().format('dddd')}`;
   }
 
-  public handleHeaderStateChanges(): void {
-    if (!this.isCollapsed) {
-      return;
-    }
-    this.isCollapsed = false;
-
-    this.headerExpanded.emit(this.isCollapsed);
+  public handleHeaderStateChanges(headerState: boolean): void {
+    this.headerService.setHeaderState(!headerState);
   }
 
   private getDaySegment(): string {

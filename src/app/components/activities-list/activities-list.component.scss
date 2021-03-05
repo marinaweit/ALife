@@ -36,7 +36,7 @@
 
 @keyframes moveTop {
   0% {
-    top: var(--headerHeight);
+    top: 410px;
   }
   100% {
     top: 90px;
@@ -48,7 +48,7 @@
     top: 90px;
   }
   100% {
-    top: (--headerHeight);
+    top: 430px;
   }
 }
 

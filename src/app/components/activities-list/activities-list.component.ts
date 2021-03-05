@@ -1,14 +1,8 @@
-import {
-  AfterViewInit,
-  Component,
-  Input,
-  OnChanges,
-  OnInit,
-  SimpleChanges,
-} from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import {
   ApiService,
   CalendarService,
+  HeaderService,
   ScoreService,
   TranslationsService,
 } from '../../services';
@@ -19,6 +13,7 @@ export interface ActivitiesListViewModel {
   undoneActivities: any;
   doneActivities: any;
   selectedDate: string;
+  headerState: boolean;
 }
 
 @Component({
@@ -26,12 +21,7 @@ export interface ActivitiesListViewModel {
   templateUrl: './activities-list.component.html',
   styleUrls: ['./activities-list.component.scss'],
 })
-export class ActivitiesListComponent
-  implements OnInit, OnChanges, AfterViewInit {
-  @Input() headerExpanded;
-
-  public expanded = true;
-  public headerHeight: string;
+export class ActivitiesListComponent implements OnInit {
   public vm$: Observable<ActivitiesListViewModel>;
   public currentDate: string = moment().format('DDMMYYYY');
   public nextDate: string = moment().add(1, 'day').format('DDMMYYYY');
@@ -40,7 +30,8 @@ export class ActivitiesListComponent
     private apiService: ApiService,
     private translationsService: TranslationsService,
     private calendarService: CalendarService,
-    private scoreService: ScoreService
+    private scoreService: ScoreService,
+    private headerService: HeaderService
   ) {}
 
   ngOnInit(): void {
@@ -76,21 +67,21 @@ export class ActivitiesListComponent
       )
     );
 
+    const headerState$ = this.headerService.getHeaderState();
+
     this.vm$ = combineLatest([
       undoneActivities$,
       doneActivities$,
       selectedDate$,
+      headerState$,
     ]).pipe(
-      map(([undoneActivities, doneActivities, selectedDate]) => ({
+      map(([undoneActivities, doneActivities, selectedDate, headerState]) => ({
         undoneActivities,
         doneActivities,
         selectedDate,
+        headerState,
       }))
     );
-  }
-
-  ngAfterViewInit(): void {
-    this.setHeaderHeight();
   }
 
   public checkIfDone(activity): boolean {
@@ -105,16 +96,6 @@ export class ActivitiesListComponent
     });
 
     return !!isDone;
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if (
-      changes &&
-      changes.headerExpanded &&
-      !changes.headerExpanded.firstChange
-    ) {
-      this.expanded = !changes.headerExpanded.currentValue;
-    }
   }
 
   public translate(key: string): string {
@@ -137,15 +118,6 @@ export class ActivitiesListComponent
     }, 0);
 
     this.scoreService.setScore(todayScore);
-  }
-
-  private setHeaderHeight(): void {
-    const headerElement = document.getElementById('header') as HTMLStyleElement;
-
-    if (headerElement) {
-      this.headerHeight = `${headerElement.offsetHeight + 90}px`;
-      headerElement.style.setProperty('--headerHeight', this.headerHeight);
-    }
   }
 
   public handleGoToTodayButtonClick(): void {

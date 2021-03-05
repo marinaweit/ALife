@@ -2,10 +2,10 @@
   <div
     id="activitiesList"
     class="activities-container"
-    [style.top]="expanded ? headerHeight : '90px'"
-    [class]="expanded ? 'move-bottom ' : 'move-top '"
+    [style.top]="vm.headerState ? '430px' : '90px'"
+    [class]="vm.headerState ? 'move-bottom ' : 'move-top '"
   >
-    <ng-container *ngIf="vm.selectedDate === currentDate">
+    <div id="listTitle" *ngIf="vm.selectedDate === currentDate">
       <div class="activities-list-title" *ngIf="vm.undoneActivities.length">
         {{ translate("jobs_for_today") }}
         <span>
@@ -27,7 +27,7 @@
           [activity]="activity"
         ></app-activity>
       </div>
-    </ng-container>
+    </div>
 
     <div
       class="activities-list-completed-title"

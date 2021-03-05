@@ -1,9 +1,9 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { Subscription } from 'rxjs';
-import { take } from 'rxjs/operators';
 import { LANGUAGE } from 'src/app/constants';
 import { CalendarService } from 'src/app/services';
+
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
@@ -91,7 +91,9 @@ export class CalendarComponent implements OnInit, OnDestroy {
     }
   }
 
-  public openSelectedDate(date: Date): void {
+  public openSelectedDate(date: Date, event: Event): void {
+    event.stopPropagation();
+
     const calendarDay = moment(date);
     const currentDay = moment(this.currentDate, 'DDMMYYYY').add(1, 'day');
 

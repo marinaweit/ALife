@@ -1,10 +1,2 @@
-<div *ngIf="triggerDayChange" [@inOutAnimation]>
-  <app-header
-    (headerExpanded)="handleHeaderState($event)"
-    [touched]="touched"
-  ></app-header>
-</div>
-<app-activities-list
-  (touchmove)="handleTouch($event)"
-  [headerExpanded]="headerExpanded"
-></app-activities-list>
+<app-header></app-header>
+<app-activities-list></app-activities-list>

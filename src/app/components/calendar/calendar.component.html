@@ -1,7 +1,7 @@
 <div class="calendar-title">{{ currentMonth }}</div>
 <div class="calendar-container">
   <div
-    (click)="openSelectedDate(date)"
+    (click)="openSelectedDate(date, $event)"
     class="calendar-item"
     [class.highlight-past-day]="highlightPastDay(date)"
     [class.highlight-next-day]="highlightNextDay(date)"

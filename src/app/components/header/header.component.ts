@@ -15,18 +15,7 @@ import {
   animate,
 } from '@angular/animations';
 import { combineLatest, Observable } from 'rxjs';
-import { map, pairwise } from 'rxjs/operators';
-
-const dayChange = trigger('inOutAnimation', [
-  transition(':enter', [
-    style({ opacity: 0 }),
-    animate('0.2s linear', style({ opacity: 1 })),
-  ]),
-  transition(':leave', [
-    animate('0.2s linear', style({ opacity: 0 })),
-    style({ opacity: 1 }),
-  ]),
-]);
+import { map, pairwise, tap } from 'rxjs/operators';
 
 const EXPANSION_PANEL_ANIMATION_TIMING = '200ms linear';
 
@@ -43,7 +32,7 @@ const expansion = trigger('expansion', [
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss'],
-  animations: [expansion, dayChange],
+  animations: [expansion],
 })
 export class HeaderComponent implements OnInit {
   public triggerDayChange = true;
@@ -73,10 +62,10 @@ export class HeaderComponent implements OnInit {
         return;
       }
 
-      this.triggerDayChange = false;
+      this.triggerDayChange = !this.triggerDayChange;
       setTimeout(() => {
-        this.triggerDayChange = true;
-      }, 0);
+        this.triggerDayChange = !this.triggerDayChange;
+      }, 300);
     });
 
     this.vm$ = combineLatest([headerState$, calendar$, score$]).pipe(
@@ -103,6 +92,12 @@ export class HeaderComponent implements OnInit {
             : welcomeTitleCalendar,
           isScoreMax,
         };
+      }),
+      tap((res) => {
+        setTimeout(() => {
+          this.setHeaderImage(res.selectedDate, res.isScoreMax);
+          this.setWelcomeTitle(res.welcomeTitle);
+        }, 500);
       })
     );
   }
@@ -137,7 +132,34 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  public setHeaderImage(selectedDate: string, isScoreMax: boolean): string {
+    const imageSrc = document.getElementById('logoImg') as HTMLImageElement;
+
+    if (this.currentDate === selectedDate && !isScoreMax) {
+      return (imageSrc.src = './assets/header_img_1.png');
+    }
+
+    if (this.currentDate !== selectedDate && selectedDate !== this.nextDate) {
+      return (imageSrc.src = './assets/header_day_completed.png');
+    }
+
+    if (isScoreMax) {
+      return (imageSrc.src = './assets/header_great_job.png');
+    }
+
+    if (selectedDate === this.nextDate) {
+      return (imageSrc.src = './assets/header_img_next_day.png');
+    }
+  }
+
+  public setWelcomeTitle(welcomeTitle: string): string {
+    if (!welcomeTitle) return;
+    return (document.getElementById('welcomeTitle').innerHTML = this.translate(
+      welcomeTitle
+    ));
+  }
+
   public translate(key: string): string {
-    return this.translationsService.translate(key);
+    return this.translationsService.translate(key) || '';
   }
 }

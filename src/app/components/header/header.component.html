@@ -27,41 +27,22 @@
     <div [@expansion]="!vm.headerState">
       <div class="expanded-content-container" [@expansion]="!vm.headerState">
         <div class="content-bg"></div>
-        <div class="expanded-title" *ngIf="triggerDayChange" [@inOutAnimation]>
-          {{ translate(vm.welcomeTitle) }}
+        <div
+          class="animate__animated expanded-title"
+          id="welcomeTitle"
+          [class.animate__backOutLeft]="!triggerDayChange"
+          [class.animate__backInLeft]="triggerDayChange"
+        >
+          <!-- {{ translationTimeout(vm.welcomeTitle) }} -->
         </div>
         <div class="expanded-content container">
           <app-chart [expanded]="true"></app-chart>
-          <div *ngIf="triggerDayChange" [@inOutAnimation]>
-            <img
-              loading="lazy"
-              *ngIf="currentDate === vm.selectedDate && !vm.isScoreMax"
-              src="./assets/header_img_1.png"
-              alt=""
-            />
-
-            <img
-              loading="lazy"
-              *ngIf="
-                currentDate !== vm.selectedDate && vm.selectedDate !== nextDate
-              "
-              src="./assets/header_day_completed.png"
-              alt=""
-            />
-
-            <img
-              loading="lazy"
-              *ngIf="vm.isScoreMax"
-              src="./assets/header_great_job.png"
-              alt=""
-            />
-
-            <img
-              loading="lazy"
-              *ngIf="vm.selectedDate === nextDate"
-              src="./assets/header_img_next_day.png"
-              alt=""
-            />
+          <div
+            class="animate__animated"
+            [class.animate__backOutRight]="!triggerDayChange"
+            [class.animate__backInRight]="triggerDayChange"
+          >
+            <img id="logoImg" alt="" />
           </div>
         </div>
         <div

@@ -6,24 +6,11 @@ import {
   ScoreService,
   TranslationsService,
 } from 'src/app/services';
-import { trigger, transition, style, animate } from '@angular/animations';
-
-const dayChange = trigger('inOutAnimation', [
-  transition(':enter', [
-    style({ opacity: 0 }),
-    animate('0.2s linear', style({ opacity: 1 })),
-  ]),
-  transition(':leave', [
-    animate('0.2s linear', style({ opacity: 0 })),
-    style({ opacity: 1 }),
-  ]),
-]);
 
 @Component({
   selector: 'app-chart',
   templateUrl: './chart.component.html',
   styleUrls: ['./chart.component.scss'],
-  animations: [dayChange],
 })
 export class ChartComponent implements OnInit {
   @Input() expanded: boolean;
@@ -38,12 +25,15 @@ export class ChartComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    const score$ = this.scoreService.getScore();
-    const calendar$ = this.calendarService.getSelectedDate().pipe(
-      startWith([null]),
-      pairwise(),
-      tap(([previousValue, currentValue]) => {
-        if (previousValue !== currentValue) {
+    const score$ = this.scoreService.getScore().pipe(startWith(0), pairwise());
+
+    const calendar$ = this.calendarService
+      .getSelectedDate()
+      .pipe(startWith(''), pairwise());
+
+    const triggerDayChange$ = combineLatest([calendar$, score$]).pipe(
+      tap(([[previousValue, currentValue], [previousScore, currentScore]]) => {
+        if (previousValue !== currentValue || previousScore !== currentScore) {
           this.triggerDayChange = false;
           setTimeout(() => {
             this.triggerDayChange = true;
@@ -52,10 +42,12 @@ export class ChartComponent implements OnInit {
       })
     );
 
-    this.vm$ = this.vm$ = combineLatest([score$, calendar$]).pipe(
-      map(([score]) => ({
-        score,
-        scoreDasharray: `${score.toString()},${(100 - score).toString()}`,
+    this.vm$ = this.vm$ = combineLatest([score$, triggerDayChange$]).pipe(
+      map(([[previousScore, currentScore]]) => ({
+        score: currentScore,
+        scoreDasharray: `${currentScore.toString()},${(
+          100 - currentScore
+        ).toString()}`,
       }))
     );
   }

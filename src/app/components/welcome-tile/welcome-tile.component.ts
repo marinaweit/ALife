@@ -64,7 +64,7 @@ export class WelcomeTileComponent implements AfterViewInit {
         setTimeout(() => {
           this.setHeaderImage(res.selectedDate, res.isScoreMax);
           this.setWelcomeTitle(res.welcomeTitle);
-        }, 100);
+        }, 200);
       })
     );
   }
@@ -138,14 +138,12 @@ export class WelcomeTileComponent implements AfterViewInit {
     if (!welcomeTitle) {
       return;
     }
-    setTimeout(() => {
-      document.querySelector('#welcomeTitle').innerHTML = this.translate(
-        welcomeTitle
-      );
-    }, 300);
+    document.getElementById('welcomeTitle').innerHTML = this.translate(
+      welcomeTitle
+    );
   }
 
   public translate(key: string): string {
-    return this.translationsService.translate(key) || '';
+    return this.translationsService.translate(key) || 'Hello there!';
   }
 }

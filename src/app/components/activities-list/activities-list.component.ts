@@ -121,6 +121,7 @@ export class ActivitiesListComponent implements OnInit {
   }
 
   public handleGoToTodayButtonClick(): void {
+    this.headerService.setHeaderState(true);
     this.calendarService.setSelectedDate(moment().format('DDMMYYYY'));
   }
 }

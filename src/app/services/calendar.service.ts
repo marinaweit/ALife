@@ -21,7 +21,7 @@ export class CalendarService {
     )[0];
 
     if (activitiesList) {
-      activitiesList.scrollIntoView();
+      activitiesList.scrollIntoView({ behavior: 'smooth' });
     }
   }
 

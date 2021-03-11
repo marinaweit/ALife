@@ -1,10 +1,7 @@
+<app-welcome-tile></app-welcome-tile>
+
 <ng-container *ngIf="vm$ | async as vm">
-  <div
-    id="activitiesList"
-    class="activities-container"
-    [style.top]="vm.headerState ? '430px' : '90px'"
-    [class]="vm.headerState ? 'move-bottom ' : 'move-top '"
-  >
+  <div class="activities-container">
     <div id="listTitle" *ngIf="vm.selectedDate === currentDate">
       <div class="activities-list-title" *ngIf="vm.undoneActivities.length">
         {{ translate("jobs_for_today") }}

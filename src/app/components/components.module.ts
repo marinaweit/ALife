@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { HeaderComponent } from './header/header.component';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ActivitiesListComponent } from './activities-list/activities-list.component';
@@ -11,15 +10,18 @@ import { MatIconModule } from '@angular/material/icon';
 import { ChartComponent } from './chart/chart.component';
 import { CalendarComponent } from './calendar/calendar.component';
 import { LoaderComponent } from './loader/loader.component';
+import { WelcomeTileComponent } from './welcome-tile/welcome-tile.component';
+import { HeaderComponent } from './header/header.component';
 
 @NgModule({
   declarations: [
-    HeaderComponent,
     ActivitiesListComponent,
     ActivityComponent,
     ChartComponent,
     CalendarComponent,
     LoaderComponent,
+    WelcomeTileComponent,
+    HeaderComponent,
   ],
   imports: [
     CommonModule,
@@ -29,6 +31,11 @@ import { LoaderComponent } from './loader/loader.component';
     HttpClientModule,
     MatIconModule,
   ],
-  exports: [HeaderComponent, ActivitiesListComponent, LoaderComponent],
+  exports: [
+    WelcomeTileComponent,
+    ActivitiesListComponent,
+    LoaderComponent,
+    HeaderComponent,
+  ],
 })
 export class ComponentsModule {}

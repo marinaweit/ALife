@@ -1,58 +1,25 @@
 <ng-container *ngIf="vm$ | async as vm">
-  <div (click)="handleHeaderStateChanges(vm.headerState)">
-    <div
-      class="header-title"
-      [class]="
-        !vm.headerState ? 'collapsed-header-title' : 'expanded-header-title'
-      "
-      [style.borderBottom]="vm.headerState ? '' : '3px solid #23ca96'"
-      [style.background]="vm.headerState ? '' : '#dcf0ef'"
-    >
-      <ng-container *ngIf="!vm.headerState; else expanded">
+  <div
+    class="header-container"
+    (click)="handleHeaderStateChanges(vm.headerState)"
+    [class]="
+      vm.headerState ? 'expanded-header-title' : 'collapsed-header-title'
+    "
+  >
+    <div class="header-title">
+      <div *ngIf="!vm.headerState" class="header-collapsed" [@inOutAnimation]>
         <div class="header-title-bg"></div>
         <div class="header-title-bg2"></div>
-
-        <div class="header-date">
+        <div class="header-collapsed-title">
           {{ getCurrentDateTitle(vm.selectedDate) }}
         </div>
         <div class="collapsed-chart">
           <app-chart [expanded]="false"></app-chart>
         </div>
-      </ng-container>
-      <ng-template #expanded> <app-calendar></app-calendar> </ng-template>
-    </div>
-  </div>
+      </div>
 
-  <div class="accordion">
-    <div [@expansion]="!vm.headerState">
-      <div class="expanded-content-container" [@expansion]="!vm.headerState">
-        <div class="content-bg"></div>
-        <div
-          class="animate__animated expanded-title"
-          id="welcomeTitle"
-          [class.animate__backOutLeft]="!triggerDayChange"
-          [class.animate__backInLeft]="triggerDayChange"
-        >
-          <!-- {{ translationTimeout(vm.welcomeTitle) }} -->
-        </div>
-        <div class="expanded-content container">
-          <app-chart [expanded]="true"></app-chart>
-          <div
-            class="animate__animated"
-            [class.animate__backOutRight]="!triggerDayChange"
-            [class.animate__backInRight]="triggerDayChange"
-          >
-            <img id="logoImg" alt="" />
-          </div>
-        </div>
-        <div
-          class="background-rectangle"
-          [class.background-rectangle-orange]="
-            currentDate !== vm.selectedDate && vm.selectedDate !== nextDate
-          "
-          [class.background-rectangle-green]="currentDate === vm.selectedDate"
-          [class.background-rectangle-blue]="nextDate === vm.selectedDate"
-        ></div>
+      <div *ngIf="vm.headerState" class="header-calendar" [@inOutAnimation]>
+        <app-calendar></app-calendar>
       </div>
     </div>
   </div>

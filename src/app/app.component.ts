@@ -7,7 +7,7 @@ import {
   LoaderService,
   TranslationsService,
 } from './services';
-import { routeTransitionAnimations } from './app-routing-animations';
+import { routeTransitionAnimations } from './animations/routing.animation';
 import { RouterOutlet } from '@angular/router';
 
 @Component({

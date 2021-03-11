@@ -1,0 +1,28 @@
+<ng-container *ngIf="vm$ | async as vm">
+  <div class="welcome-tile-container">
+    <div
+      class="animate__animated welcome-title"
+      id="welcomeTitle"
+      [class.animate__fadeOutLeft]="!triggerDayChange"
+      [class.animate__fadeInLeft]="triggerDayChange"
+    ></div>
+    <div class="welcome-tile container">
+      <app-chart [expanded]="true"></app-chart>
+      <div
+        class="animate__animated"
+        [class.animate__fadeOutRight]="!triggerDayChange"
+        [class.animate__fadeInRight]="triggerDayChange"
+      >
+        <img id="logoImg" alt="" />
+      </div>
+    </div>
+    <div
+      class="background-rectangle"
+      [class.background-rectangle-orange]="
+        currentDate !== vm.selectedDate && vm.selectedDate !== nextDate
+      "
+      [class.background-rectangle-green]="currentDate === vm.selectedDate"
+      [class.background-rectangle-blue]="nextDate === vm.selectedDate"
+    ></div>
+  </div>
+</ng-container>

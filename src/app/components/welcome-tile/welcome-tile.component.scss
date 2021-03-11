@@ -1,0 +1,66 @@
+.welcome-tile-container {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: column;
+  padding-top: 150px;
+  position: relative;
+  .welcome-title {
+    font-weight: bold;
+    font-size: 32px;
+    line-height: 37px;
+    color: #1f244b;
+    width: 60%;
+    padding: 0 0.7em;
+    position: absolute;
+  }
+  .welcome-tile {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    z-index: 2000;
+    width: calc(100vw - 2em);
+    padding-top: 3em;
+    app-chart {
+      position: relative;
+      flex-basis: 40vw;
+      flex-shrink: 0;
+      flex-grow: 0;
+      bottom: -60px;
+    }
+    div {
+      flex-shrink: 0;
+      flex-grow: 0;
+      flex-basis: 45vw;
+      height: 200px;
+    }
+  }
+
+  .background-rectangle {
+    height: 70vw;
+    width: 150%;
+    position: relative;
+    bottom: 0;
+    top: -10vh;
+    left: -10vw;
+    clip-path: polygon(0 0, 100% 0%, 100% 22%, 0 49%);
+  }
+
+  .background-rectangle-orange {
+    background: linear-gradient(274.59deg, #f4de14 0.54%, #dea81d 100%);
+  }
+
+  .background-rectangle-green {
+    background: linear-gradient(274.72deg, #20d287 0.43%, #2bb3bc 104.27%);
+  }
+
+  .background-rectangle-blue {
+    background: linear-gradient(274.72deg, #20b2d2 0.43%, #2b88bc 104.27%);
+  }
+}
+
+.animate__fadeOutLeft,
+.animate__fadeInLeft,
+.animate__fadeOutRight,
+.animate__fadeInRight {
+  --animate-duration: 300ms;
+}

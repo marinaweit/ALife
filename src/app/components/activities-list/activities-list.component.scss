@@ -22,34 +22,9 @@
 }
 
 .activities-container {
-  position: relative;
   padding: 1em;
-}
-
-.move-bottom {
-  animation: moveBottom 0.2s linear;
-}
-
-.move-top {
-  animation: moveTop 0.2s linear;
-}
-
-@keyframes moveTop {
-  0% {
-    top: 410px;
-  }
-  100% {
-    top: 90px;
-  }
-}
-
-@keyframes moveBottom {
-  0% {
-    top: 90px;
-  }
-  100% {
-    top: 430px;
-  }
+  position: relative;
+  top: -50vw;
 }
 
 .completed-all-title,

@@ -15,6 +15,14 @@ export class CalendarService {
 
   public setSelectedDate(date: string): void {
     this.selectedDate$.next(date);
+
+    const activitiesList = document.getElementsByTagName(
+      'app-activities-list'
+    )[0];
+
+    if (activitiesList) {
+      activitiesList.scrollIntoView();
+    }
   }
 
   public getSelectedDate(): Observable<string> {
